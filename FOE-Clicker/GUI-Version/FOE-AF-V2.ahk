@@ -34,8 +34,8 @@ OnExit handle_exit
 	x2CloseRegion:=820
 	y2CloseRegion:=750
 	
+	;buttonImages:={"nextButton":"nextButton.png","helpButton":"helpButton.png","closeButton":"closeButton.png","FriendButtonSelected":"FriendButtonSelected.png","guildButtonUnselected":"guildButtonUnselected.png","neighborButtonUnselected":"neighborButtonUnselected.png","firstLeftButton":"firstLeftButton.png"}
 	buttonImages:={"nextButton":"nextButton.png","helpButton":"helpButton.png","closeButton":"closeButton.png","FriendButtonSelected":"FriendButtonSelected.png","guildButtonUnselected":"guildButtonUnselected.png","neighborButtonUnselected":"neighborButtonUnselected.png","firstLeftButton":"firstLeftButton.png"}
-	
 	
 	
   
@@ -50,7 +50,9 @@ OnExit handle_exit
   Gui, Add, Edit, x15 y45 R1 vFriendsCount Number , 13
   Gui, Add, Text, x50 y48  , number of friends
   Gui, Add, Checkbox,  x150 y48 vdoFriends, use?
-  Gui, Add, Text, x25 y75, to start auto Help use WIN+S
+  Gui, Add, Edit, x15 y66 R1 vTabTitle Text , Forge of Empires - Google Chrome 
+  Gui, Add, Text, x225 y69, (window title of browser)
+  Gui, Add, Text, x25 y95, to start auto Help use WIN+S
   Gui, Add, Text,, to stop auto functions use WIN+Q
   Gui, Add, Text,, to suspend script use PAUSE
   Gui, Add, Text,, to check color and coord under cursor(relative to active window) use WIN+C
@@ -58,6 +60,7 @@ OnExit handle_exit
   Gui, Add, Text, x25 y275 w400 vHelpedBluePrints
   Gui, Add, Text, x25 y300 w400 vcouldNotHelp
   Gui, Add, Text, x25 y325 w400 verrors cred
+  ;init gui variables
   GuiControl,, autoHelpState , autoHelp OFF
   GuiControl,, doNeighbors , 1
   GuiControl,, doGuildies , 1
@@ -67,6 +70,7 @@ OnExit handle_exit
   hotkey , #q           , endAutoHelp					;# is win-key
   hotkey , Pause        , pauseScript
   hotkey , #c        	  , colortest
+  ;following functions for debugging
   hotkey , #t        	  , testTest
   hotkey , #i        	  , checkImages
 return
