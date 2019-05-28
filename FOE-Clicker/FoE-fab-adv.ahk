@@ -14,7 +14,7 @@
 ;#####global constants###############################################
 ;####################################################################
 co_image_correction := 30
-
+buttonImages:={"tavernReady":"\img\tavernReady.jpg","nextButton":"nextButton.png","helpButton":"helpButton.png","closeButton":"closeButton.png","FriendButtonSelected":"FriendButtonSelected.png","guildButtonUnselected":"guildButtonUnselected.png","neighborButtonUnselected":"neighborButtonUnselected.png","firstLeftButton":"firstLeftButton.png"}
 
 
 ^!F::
@@ -198,14 +198,16 @@ return
 ;######
 ;teststuff
 ^#t::
-	ret := clickImage("tavernReady.jpg")
+	wd := %A_WorkingDir%
+	imgPath := wd . buttonImages["tavernReady"] ;%A_WorkingDir%\img\
+	ret := clickImage(imgPath)
 		If ret = 0 
 		{
 			cToolTip("gefunden")
 		}
 		else
 		{
-			cToolTip("nicht gefunden %ret%")
+			cToolTip(imgPath)
 		}
 return
 
