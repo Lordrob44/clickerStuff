@@ -198,8 +198,8 @@ return
 ;######
 ;teststuff
 ^#t::
-	wd := %A_WorkingDir%
-	imgPath := wd . buttonImages["tavernReady"] ;%A_WorkingDir%\img\
+	testWorkdir := %A_ScriptDir%
+	imgPath := testWorkdir . buttonImages["tavernReady"] ;%A_ScriptDir%\img\
 	ret := clickImage(imgPath)
 		If ret = 0 
 		{
