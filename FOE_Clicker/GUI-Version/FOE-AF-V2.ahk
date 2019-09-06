@@ -3,15 +3,26 @@
 	;TODO set region(s) with gui
 	;TODO PERSITENT ckeck shade/region/adjustvalues to correspond to right values
 
+;###############################
+;### GLOABLS
+;###############################
 CoordMode Pixel
 CoordMode Mouse
 
 global windowTitles:=["Forge of Empires - Mozilla Firefox","Forge of Empires - Google Chrome"]
 
+global randSleepMin:=550
+global randSleepMax:=650
+
+global toolTipTimeout:=1000
+
+;###############################
+;### GUI
+;###############################
+
 OnExit handle_exit
 
 	autoHelp:=0
-	toolTipTimeout:=1000
 	helpTimeOutNormal:=2500
 	helpedBluePrintsCount:=0
 	couldNotHelpCount:=0
@@ -80,10 +91,7 @@ return
 
 
 testTest:
-if checkBrowserTitle()
-{
-MsgBox, success
-}
+clickImage(buttonImages[nextButton])
 
 /*
 autoHelp:=1
@@ -235,6 +243,33 @@ closeCheck:
 		}
 return
 
+RandSleep(RandSleepX,RandSleepY) {
+	Random, randSleep, %RandSleepX%, %RandSleepY%
+	Sleep %randSleep%
+}
+
+clickImage(image) {
+	ret := findImage(image, FoundX, FoundY)
+		If ret = 0 ;Found image
+		{
+			WinWaitActive, Forge of Empires - Google Chrome, ; best to always check the active window before firing controls TODO set global variable
+			MouseClick, left, %FoundX%, %FoundY% ; actual click on the target
+			RandSleep(%randSleepMin%,%randSleepMax%)
+			MouseClick, left, %FoundX%, %FoundY% ; click to close (possibly) opened window
+		}
+	return ret
+	}
+
+findImage(image, ByRef found_x, ByRef found_y) {
+	ImageSearch, FoundX, FoundY, 0, 0, A_ScreenWidth, A_ScreenHeight, *30 %image%
+		If ErrorLevel = 0 ;Success
+		{
+			found_x := FoundX
+			found_y := FoundY
+		}
+		return ErrorLevel ; set to 0 if the image was found in the specified region, 1 if it was not found, or 2 if there was a problem that prevented the command from conducting the search (such as failure to open the image file or a badly formatted option).
+	}
+	
 colortest:
 MouseGetPos, xpos, ypos 
 PixelGetColor, posCol, %xpos%, %ypos%
