@@ -1,12 +1,14 @@
-CoordMode Pixel
-CoordMode Mouse
-OnExit handle_exit
 	;TODO may set option for coordmode
 	;TODO save settings
 	;TODO set region(s) with gui
 	;TODO PERSITENT ckeck shade/region/adjustvalues to correspond to right values
-	
-	title:="Forge of Empires - Mozilla Firefox"
+
+CoordMode Pixel
+CoordMode Mouse
+
+global windowTitles:=["Forge of Empires - Mozilla Firefox","Forge of Empires - Google Chrome"]
+
+OnExit handle_exit
 
 	autoHelp:=0
 	toolTipTimeout:=1000
@@ -40,7 +42,7 @@ OnExit handle_exit
 	
   
   Gui,  +AlwaysOnTop  +Owner +Resize +ToolWindow ; window for the dock
-  Gui, Show, NoActivate w400 h400 x850 y150 , FOE-Auto-Functions
+  Gui, Show, NoActivate w400 h400 x1450 y150 , FOE-Auto-Functions
   Gui, Add, Edit, x15 y5 R1 vNeighborsCount Number , 77
   Gui, Add, Text, x50 y8  , number of neigbors
   Gui, Add, Checkbox,  x150 y8 vdoNeighbors, use?
@@ -50,8 +52,8 @@ OnExit handle_exit
   Gui, Add, Edit, x15 y45 R1 vFriendsCount Number , 13
   Gui, Add, Text, x50 y48  , number of friends
   Gui, Add, Checkbox,  x150 y48 vdoFriends, use?
-  Gui, Add, Edit, x15 y66 R1 vTabTitle Text , Forge of Empires - Google Chrome 
-  Gui, Add, Text, x225 y69, (window title of browser)
+  ;Gui, Add, Edit, x15 y66 R1 vTabTitle Text , Forge of Empires - Google Chrome
+  ;Gui, Add, Text, x225 y69, (window title of browser)
   Gui, Add, Text, x25 y95, to start auto Help use WIN+S
   Gui, Add, Text,, to stop auto functions use WIN+Q
   Gui, Add, Text,, to suspend script use PAUSE
@@ -74,7 +76,16 @@ OnExit handle_exit
   hotkey , #t        	  , testTest
   hotkey , #i        	  , checkImages
 return
+
+
+
 testTest:
+if checkBrowserTitle()
+{
+MsgBox, success
+}
+
+/*
 autoHelp:=1
 while autoHelp=1
 {
@@ -86,6 +97,9 @@ findAndClick(buttonImages["firstLeftButton"], x1HelpRegion, y1HelpRegion, x2Help
 Sleep helpTimeOutNormal
 findAndClick(buttonImages["FriendButtonSelected"], x1HelpRegion, y1HelpRegion, x2HelpRegion, y2HelpRegion, allowedShadeNGF, xhelpAdjust, yhelpAdjust)
 Sleep helpTimeOutNormal
+
+/*
+
 /*
 findAndClick(buttonImages["neighborButtonUnselected"], x1HelpRegion, y1HelpRegion, x2HelpRegion, y2HelpRegion, allowedShadeNGF, xhelpAdjust, yhelpAdjust)
 Sleep helpTimeOutNormal
@@ -100,8 +114,9 @@ if ErrorLevel = 2
     MsgBox Could not conduct the search.
 else if ErrorLevel = 1
     MsgBox could not be found in the region
-	*/
+	
 }
+*/
 return
 
 findAndClick(image,x1,y1,x2,y2,shade,xAdjust,yAdjust){
@@ -186,7 +201,16 @@ else
     GuiControl,, errors , %title% not active window
 return
 
-
+checkBrowserTitle()
+	{
+	for i, title in windowTitles
+		{
+		if WinActive(title)
+			{
+			return 1
+			}
+		}
+	}
 
 closeCheck:
 ;check for blueprint window		
