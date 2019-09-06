@@ -14,7 +14,7 @@ global windowTitles:=["Forge of Empires - Mozilla Firefox","Forge of Empires - G
 global randSleepMin:=550
 global randSleepMax:=650
 
-global toolTipTimeout:=1000
+global toolTipTimeout:=5000
 
 ;###############################
 ;### GUI
@@ -91,8 +91,8 @@ return
 
 
 testTest:
-clickImage(buttonImages[nextButton])
-
+test:=clickImage(buttonImages["nextButton"])
+cLog(test)
 /*
 autoHelp:=1
 while autoHelp=1
@@ -209,7 +209,7 @@ else
     GuiControl,, errors , %title% not active window
 return
 
-checkBrowserTitle()
+checkBrowser()
 	{
 	for i, title in windowTitles
 		{
@@ -252,10 +252,13 @@ clickImage(image) {
 	ret := findImage(image, FoundX, FoundY)
 		If ret = 0 ;Found image
 		{
-			WinWaitActive, Forge of Empires - Google Chrome, ; best to always check the active window before firing controls TODO set global variable
+			if checkBrowser() ; best to always check the active window before firing controls
+			{
 			MouseClick, left, %FoundX%, %FoundY% ; actual click on the target
+			cLog(%randSleepMin%)
 			RandSleep(%randSleepMin%,%randSleepMax%)
 			MouseClick, left, %FoundX%, %FoundY% ; click to close (possibly) opened window
+			}
 		}
 	return ret
 	}
@@ -269,7 +272,16 @@ findImage(image, ByRef found_x, ByRef found_y) {
 		}
 		return ErrorLevel ; set to 0 if the image was found in the specified region, 1 if it was not found, or 2 if there was a problem that prevented the command from conducting the search (such as failure to open the image file or a badly formatted option).
 	}
-	
+
+cLog(text)
+	{
+	;log in gui
+	GuiControl,, errors , %text%
+	;log on screen
+	cToolTip(%text%)
+	}
+
+
 colortest:
 MouseGetPos, xpos, ypos 
 PixelGetColor, posCol, %xpos%, %ypos%
@@ -287,13 +299,13 @@ pauseScript:
 	Suspend
 return
 
-volatileTooltip(text){
-	ToolTip, %text%
-	SetTimer, RemoveToolTip, %toolTipTimeout%
-}
+cToolTip(msg) {
+			ToolTip, %msg%
+			SetTimer, RemoveToolTip, %toolTipTimeout%
+	}
+
 RemoveToolTip:
-	SetTimer, RemoveToolTip, Off
-	ToolTip
+ToolTip
 return
 
 GuiClose:
